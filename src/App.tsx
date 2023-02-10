@@ -1,6 +1,6 @@
 import React from "react";
 //import { Routes, Route } from "react-router-dom";
-import Sidebar from "./atoms/button/Sidebar/Sidebar";
+//import Sidebar from "./atoms/button/Sidebar/Sidebar";
 import ChooseSeat from "./components/seatLayout/SeatLayout";
 import MoviesList from "./components/MoviesList";
 import WelcomePage from "./components/WelcomePage/WelcomePage";
