@@ -10,7 +10,7 @@ import RouteController from "./routes/RouteController";
 function App() {
   return (
     <div className="flex flex-row">
-      <Sidebar />
+      {/*<Sidebar />*/}
       {/*<Routes>
         <Route path={PathNames.WELCOME_PAGE} element={<WelcomePage />} />
         <Route path={PathNames.MOVIES} element={<MoviesList />} />
