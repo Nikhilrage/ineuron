@@ -1,100 +1,116 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MdOutlineChair } from "react-icons/md";
 import { PathNames } from "../../routes/PathNames";
+import Sidebar from "../../atoms/Sidebar/Sidebar";
+import { movieList, theatreSeatLayout } from "../../constants/MoviesList";
 
 const ChooseSeat = () => {
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const [selectedSeat, setSelectedSeat] = useState<any>([]);
+  const { movieId, theatreName, screenNo } = useParams();
+
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  const [layout, setLayout] = useState<any>({});
+  const [price, setPrice] = useState<number>(0);
+
   useEffect(() => {
-    if (location.state) {
-      console.log(location.state);
+    if (movieId && theatreName && screenNo) {
+      getSeatLayout();
     }
-  }, [location]);
-  const theatersDetails: any = {
-    name: "Inox-Hyderabad",
-    showTimings: ["9:00 Am", "1:00pm", "4:00pm"],
-    seatLayout: {
-      A: 40,
-      B: 40,
-      C: 40,
-      D: 40,
-      E: 40,
-      F: 40,
-      G: 40,
-      H: 40,
-      I: 40,
-    },
-    occupiedSeats: ["B1", "C7"],
+  }, [movieId, theatreName, screenNo]);
+
+  const getSeatLayout = () => {
+    const findSeatLayout = theatreSeatLayout.find((item: any) => {
+      return (
+        item.theatreName === theatreName && item.screenNo === Number(screenNo)
+      );
+    });
+    if (findSeatLayout !== undefined) {
+      const { seatLayout } = findSeatLayout;
+      setLayout(seatLayout);
+    }
   };
-  const [occupiedSeats, setOccupiedSeats] = useState<any>(
-    theatersDetails.occupiedSeats
-  );
+
   const blockSeats = () => {
-    const { occupiedSeats } = theatersDetails;
-    let occupiedSeatsCopy = [...occupiedSeats];
-    occupiedSeatsCopy = [...selectedSeat, ...occupiedSeats];
-    theatersDetails.occupiedSeats = occupiedSeatsCopy;
-    setOccupiedSeats(occupiedSeatsCopy);
-    console.log(theatersDetails);
-    navigate(PathNames.USER_DETAILS);
+    //If no seats are selected and if user clicks on check out button
+    if (selectedSeats.length === 0) {
+      alert("Please select atleast one seat");
+      return;
+    }
+    //Passing selected seat numbers and total cost from location state to payment page
+    navigate(PathNames.USER_DETAILS, {
+      state: { blockedSeats: [...selectedSeats], price },
+    });
+  };
+
+  const seatSelectHandler = (row: string, seatIndex: number) => {
+    //if user wants to unselect the selected seat
+    if (selectedSeats.includes(row + seatIndex)) {
+      const unSelectSeat = selectedSeats.filter((seatNo: string) => {
+        return seatNo !== row + seatIndex;
+      });
+      setSelectedSeats([...unSelectSeat]);
+      setPrice(price - 220);
+    } else {
+      //if user want to select seat
+      setSelectedSeats([...selectedSeats, row + seatIndex]);
+      setPrice(price + 220);
+    }
   };
 
   return (
-    <div className="container bg-[#E9E2E3]">
-      <div className="p-2 flex justify-between items-center border border-b-indigo-600">
-        <span>The Dark</span>
-        <span>Inox-Hyderabad | 9:00 AM</span>
-        <span>
-          <button
-            className="p-2 ease-in-out duration-300 bg-[#000] text-[#fff] rounded-xl"
-            onClick={blockSeats}
-          >
-            Book Now
-          </button>
-        </span>
-      </div>
-      <div className="" style={{ width: "100vw" }}>
-        {Object.keys(theatersDetails.seatLayout).map(
-          (i: string, index: number) => (
-            <div
-              key={index}
-              className="flex flex-row items-center justify-start"
-            >
-              <span
-                style={{ fontSize: 14, fontWeight: 400, paddingLeft: "0px" }}
+    <>
+      <Sidebar title="Seat Selection" />
+      <div className="w-full relative">
+        <div className="header">
+          <div className=" mx-4 flex justify-between items-center">
+            <p className=" text-xl">{`${theatreName} || screen- ${screenNo}`}</p>
+            <div>
+              <span className="pr-3 text-[#fff]">Total: {price}</span>
+              <button
+                className="p-3 bg-[#8c001a] text-[#fff] rounded-lg font-bold hover:ease-in hover:bg-[green]"
+                onClick={blockSeats}
               >
-                {i}
-              </span>
-              {new Array(theatersDetails.seatLayout[i])
-                .fill(<MdOutlineChair />)
-                .map((item: any, index: number) => (
-                  <div
-                    key={item}
-                    onClick={() => {
-                      setSelectedSeat([i + index, ...selectedSeat]);
-                    }}
-                    style={{
-                      paddingLeft: `${index % 20 === 0 ? "80px" : "0px"}`,
-                      color: `${
-                        occupiedSeats.includes(i + index)
-                          ? "blue"
-                          : selectedSeat.includes(i + index) && "pink"
-                      }`,
-                      opacity: occupiedSeats.includes(i + index) && 0.3,
-                    }}
-                  >
-                    {item}
-                  </div>
-                ))}{" "}
+                Checkout
+              </button>
             </div>
-          )
-        )}
+          </div>
+        </div>
+        <div className="main_content w-full ">
+          <div className=" h-[300px] " style={{ margin: "50px auto" }}>
+            {layout &&
+              Object.keys(layout)?.map((row: string, rowIndex: number) => (
+                <div key={rowIndex} className="flex flex-row justify-center ">
+                  <div className="mx-4 basis-12 text-center">{row}</div>
+                  <div className="flex justify-center">
+                    {Array(layout[row])
+                      .fill(<MdOutlineChair style={{ fontSize: 28 }} />)
+                      .map((seatNo: any, seatIndex: number) => (
+                        <div
+                          key={seatIndex}
+                          className={`mx-1 cursor-pointer `}
+                          onClick={() => seatSelectHandler(row, seatIndex + 1)}
+                          style={{
+                            paddingLeft: seatIndex === 10 ? "140px" : "2px",
+                            color: selectedSeats.includes(row + (seatIndex + 1))
+                              ? "green"
+                              : "pink",
+                          }}
+                        >
+                          {seatNo}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ))}
+          </div>
+          <div className="screen_this_way absolute text-[red] bottom-6 right-[42%] ">
+            Screen This Way
+          </div>
+        </div>
       </div>
-      <div className="flex justify-center">Screen This way</div>
-    </div>
+    </>
   );
 };
 export default ChooseSeat;

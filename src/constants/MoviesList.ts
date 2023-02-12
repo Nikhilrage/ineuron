@@ -1,90 +1,440 @@
 import movie_poster_1 from "../assets/movie_poster_1.png";
 import poster_2 from "../assets/poster_2.png";
-export const moviesList = [
+import After from "../assets/After.png";
+import Titane from "../assets/Titane.png";
+import DarioArgento from "../assets/DarioArgento.jpg";
+import AmericanPsycho from "../assets/AmericanPsycho.jpg";
+import LaLaLand from "../assets/LaLaLand.jpg";
+
+//This has 2 data structures one is for movie list and other(theatreSeatLayout) is for theatre details...
+//When ever the user finalises time, screen No., then based on theatre name and screen number the the theatre seat layout will be filtered from theatreSeatLayout
+
+export const movieList = [
   {
-    name: "Riddle",
-    image: movie_poster_1,
-    genres: ["Romatic", "Fictional", "Action"],
-    liked: "100%",
+    id: "4j7uyt",
+    poster: movie_poster_1,
+    title: "The Riddle",
+    languages: ["English"],
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer",
-    theatersDetails: [
+      "An ambitious London sports journalist, an enigmatic tramp, and a police press officer team up to solve a series of murders that follow the discovery of an unpublished manuscript by Charles Dickens in a present day Thames-side pub.",
+    certificate: "A",
+    genres: ["Drama", "Action"],
+    liked: 83,
+    runtime: "2h 23m",
+    theatreDetails: [
       {
-        name: "Inox-Hyderabad",
-        showTimings: ["9:00 Am", "1:00pm", "4:00pm"],
-        seatlayout: [
-          { A: 10, B: 10, C: 10, D: 10, E: 10, F: 10, G: 10, H: 10, I: 10 },
+        name: "Inox-Inorbit",
+        screenNo: 1,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
         ],
-        occupiedSeats: [],
       },
       {
-        name: "Inox-Bangalore",
-        showTimings: ["9:00 Am", "1:00pm", "4:00pm"],
-        seatlayout: [
-          { A: 10, B: 10, C: 10, D: 10, E: 10, F: 10, G: 10, H: 10, I: 10 },
+        name: "Inox-Forum",
+        screenNo: 2,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
         ],
-        occupiedSeats: [],
       },
       {
-        name: "Inox-Chennai",
-        showTimings: ["9:00 Am", "1:00pm", "4:00pm"],
-        seatlayout: [
-          { A: 10, B: 10, C: 10, D: 10, E: 10, F: 10, G: 10, H: 10, I: 10 },
+        name: "Inox-Gold",
+        screenNo: 3,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
         ],
-        occupiedSeats: [],
       },
     ],
   },
   {
-    name: "Journey",
-    image: poster_2,
-    genres: ["Romatic", "Fictional", "Action"],
-    liked: "93%",
+    id: "4i9poy",
+    poster: poster_2,
+    title: "The Journey",
+    languages: ["English"],
     description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer",
-    theatersDetails: [
+      "An ambitious London sports journalist, an enigmatic tramp, and a police press officer team up to solve a series of murders that follow the discovery of an unpublished manuscript by Charles Dickens in a present day Thames-side pub.",
+    certificate: "U/A",
+    genres: ["Drama", "Action"],
+    liked: 83,
+    runtime: "2h 53m",
+    theatreDetails: [
       {
-        name: "Inox-Hyderabad",
-        showTimings: ["9:00 Am", "1:00pm", "4:00pm"],
-        seatLayout: [
-          { A: 10, B: 10, C: 10, D: 10, E: 10, F: 10, G: 10, H: 10, I: 10 },
+        name: "Inox-Inorbit",
+        screenNo: 1,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
         ],
-        occupiedSeats: [],
       },
       {
-        name: "Inox-Bangalore",
-        showTimings: ["9:00 Am", "1:00pm", "4:00pm"],
-        seatlayout: [
-          { A: 10, B: 10, C: 10, D: 10, E: 10, F: 10, G: 10, H: 10, I: 10 },
+        name: "Inox-Forum",
+        screenNo: 2,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
         ],
-        occupiedSeats: [],
       },
       {
-        name: "Inox-Chennai",
-        showTimings: ["9:00 Am", "1:00pm", "4:00pm"],
-        seatLayout: [
-          { A: 10, B: 10, C: 10, D: 10, E: 10, F: 10, G: 10, H: 10, I: 10 },
+        name: "Inox-Gold",
+        screenNo: 3,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
         ],
-        occupiedSeats: [],
       },
     ],
   },
-  //{
-  //  name: "Riddle",
-  //  image: movie_poster_1,
-  //  genres: ["Romatic", "Fictional", "Action"],
-  //  liked: "82%",
-  //  description:
-  //    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer",
-  //  seats: { total: 100, available: 5, occupied: 5 },
-  //},
-  //{
-  //  name: "Journey",
-  //  image: poster_2,
-  //  genres: ["Romatic", "Fictional", "Action"],
-  //  liked: "80%",
-  //  description:
-  //    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer",
-  //  seats: { total: 10, available: 5, occupied: 5 },
-  //},
+  {
+    id: "lkBn32",
+    poster: After,
+    title: "After",
+    languages: ["English"],
+    description:
+      "An ambitious London sports journalist, an enigmatic tramp, and a police press officer team up to solve a series of murders that follow the discovery of an unpublished manuscript by Charles Dickens in a present day Thames-side pub.",
+    certificate: "U",
+    genres: ["Drama", "Action"],
+    liked: 78,
+    runtime: "2h 3m",
+    theatreDetails: [
+      {
+        name: "Inox-Inorbit",
+        screenNo: 1,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Forum",
+        screenNo: 2,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Gold",
+        screenNo: 3,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+    ],
+  },
+  {
+    id: "9iurgs",
+    poster: Titane,
+    title: "Titane",
+    languages: ["English"],
+    description:
+      "An ambitious London sports journalist, an enigmatic tramp, and a police press officer team up to solve a series of murders that follow the discovery of an unpublished manuscript by Charles Dickens in a present day Thames-side pub.",
+    certificate: "A",
+    genres: ["Drama", "Action"],
+    liked: 90,
+    runtime: "2h",
+    theatreDetails: [
+      {
+        name: "Inox-Inorbit",
+        screenNo: 1,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Forum",
+        screenNo: 2,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Gold",
+        screenNo: 3,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+    ],
+  },
+  {
+    id: "Dfgbew",
+    poster: DarioArgento,
+    title: "Dario Argento",
+    languages: ["English"],
+    description:
+      "An ambitious London sports journalist, an enigmatic tramp, and a police press officer team up to solve a series of murders that follow the discovery of an unpublished manuscript by Charles Dickens in a present day Thames-side pub.",
+    certificate: "U/A",
+    genres: ["Drama", "Action"],
+    liked: 92,
+    runtime: "2h 23m",
+    theatreDetails: [
+      {
+        name: "Inox-Inorbit",
+        screenNo: 1,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Forum",
+        screenNo: 2,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Gold",
+        screenNo: 3,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+    ],
+  },
+  {
+    id: "k93lcn",
+    poster: AmericanPsycho,
+    title: "American Psycho",
+    languages: ["English"],
+    description:
+      "An ambitious London sports journalist, an enigmatic tramp, and a police press officer team up to solve a series of murders that follow the discovery of an unpublished manuscript by Charles Dickens in a present day Thames-side pub.",
+    certificate: "A",
+    genres: ["Drama", "Action"],
+    liked: 77,
+    runtime: "1h 10m",
+    theatreDetails: [
+      {
+        name: "Inox-Inorbit",
+        screenNo: 1,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Forum",
+        screenNo: 2,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Gold",
+        screenNo: 3,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+    ],
+  },
+  {
+    id: "0psm2m",
+    poster: LaLaLand,
+    title: "La La Land",
+    languages: ["English"],
+    description:
+      "An ambitious London sports journalist, an enigmatic tramp, and a police press officer team up to solve a series of murders that follow the discovery of an unpublished manuscript by Charles Dickens in a present day Thames-side pub.",
+    certificate: "A",
+    genres: ["Drama", "Action"],
+    liked: 78,
+    runtime: "2h 23m",
+    theatreDetails: [
+      {
+        name: "Inox-Inorbit",
+        screenNo: 1,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Forum",
+        screenNo: 2,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+      {
+        name: "Inox-Gold",
+        screenNo: 3,
+        shows: [
+          { time: "9:00 AM", screenNo: 1, price: 120 },
+          { time: "12:00 PM", screenNo: 2, price: 120 },
+          { time: "4:00 PM", screenNo: 3, price: 120 },
+        ],
+      },
+    ],
+  },
+];
+export const theatreSeatLayout = [
+  {
+    theatreName: "Inox-Inorbit",
+    screenNo: 1,
+    seatLayout: {
+      A: 20,
+      B: 20,
+      C: 20,
+      D: 20,
+      E: 20,
+      F: 20,
+      G: 20,
+      H: 20,
+      I: 20,
+    },
+  },
+  {
+    theatreName: "Inox-Inorbit",
+    screenNo: 2,
+    seatLayout: {
+      A: 20,
+      B: 20,
+      C: 20,
+      D: 20,
+      E: 20,
+      F: 20,
+      G: 20,
+      H: 20,
+      I: 20,
+    },
+  },
+  {
+    theatreName: "Inox-Inorbit",
+    screenNo: 3,
+    seatLayout: {
+      A: 20,
+      B: 20,
+      C: 20,
+      D: 20,
+      E: 20,
+      F: 20,
+      G: 20,
+      H: 20,
+      I: 20,
+      J: 20,
+    },
+  },
+  {
+    theatreName: "Inox-Forum",
+    screenNo: 1,
+    seatLayout: {
+      A: 20,
+      B: 20,
+      C: 20,
+      D: 20,
+      E: 20,
+      F: 20,
+      G: 20,
+      H: 20,
+      I: 20,
+    },
+  },
+  {
+    theatreName: "Inox-Forum",
+    screenNo: 2,
+    seatLayout: {
+      A: 20,
+      B: 20,
+      C: 20,
+      D: 20,
+      E: 20,
+      F: 20,
+      G: 20,
+      H: 20,
+      I: 20,
+    },
+  },
+  {
+    theatreName: "Inox-Forum",
+    screenNo: 3,
+    seatLayout: {
+      A: 20,
+      B: 20,
+      C: 20,
+      D: 20,
+      E: 20,
+      F: 20,
+      G: 20,
+      H: 20,
+      I: 20,
+      J: 20,
+    },
+  },
+  {
+    theatreName: "Inox-Gold",
+    screenNo: 1,
+    seatLayout: {
+      A: 20,
+      B: 20,
+      C: 20,
+      D: 20,
+      E: 20,
+      F: 20,
+      G: 20,
+      H: 20,
+      I: 20,
+    },
+  },
+  {
+    theatreName: "Inox-Gold",
+    screenNo: 2,
+    seatLayout: {
+      A: 20,
+      B: 20,
+      C: 20,
+      D: 20,
+      E: 20,
+      F: 20,
+      G: 20,
+      H: 20,
+      I: 20,
+    },
+  },
+  {
+    theatreName: "Inox-Gold",
+    screenNo: 3,
+    seatLayout: {
+      A: 20,
+      B: 20,
+      C: 20,
+      D: 20,
+      E: 20,
+      F: 20,
+      G: 20,
+      H: 20,
+      I: 20,
+      J: 20,
+    },
+  },
 ];

@@ -1,16 +1,15 @@
 import React from "react";
 //import { Routes, Route } from "react-router-dom";
-//import Sidebar from "./atoms/button/Sidebar/Sidebar";
 import ChooseSeat from "./components/seatLayout/SeatLayout";
-import MoviesList from "./components/MoviesList";
+import MoviesList from "./components/Movies/Movies";
 import WelcomePage from "./components/WelcomePage/WelcomePage";
 import { PathNames } from "./routes/PathNames";
 import RouteController from "./routes/RouteController";
+import Sidebar from "./atoms/Sidebar/Sidebar";
 
 function App() {
   return (
     <div className="flex flex-row">
-      {/*<Sidebar />*/}
       {/*<Routes>
         <Route path={PathNames.WELCOME_PAGE} element={<WelcomePage />} />
         <Route path={PathNames.MOVIES} element={<MoviesList />} />
