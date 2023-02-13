@@ -64,12 +64,12 @@ const ChooseSeat = () => {
       <Sidebar title="Seat Selection" />
       <div className="w-full relative">
         <div className="header">
-          <div className=" mx-4 flex justify-between items-center">
-            <p className=" text-xl">{`${theatreName} || screen- ${screenNo}`}</p>
+          <div className=" mx-4 flex justify-between items-center text-[#fff] font-bold text-xl">
+            <p className="">{`${theatreName} || screen- ${screenNo}`}</p>
             <div>
-              <span className="pr-3 text-[#fff]">Total: {price}</span>
+              <span className="pr-3 ">Total: {price}</span>
               <button
-                className="p-3 bg-[#8c001a] text-[#fff] rounded-lg font-bold hover:ease-in hover:bg-[green]"
+                className="p-3 bg-[#8c001a] rounded-lg font-bold hover:ease-in hover:bg-[green]"
                 onClick={blockSeats}
               >
                 Checkout
@@ -78,11 +78,13 @@ const ChooseSeat = () => {
           </div>
         </div>
         <div className="main_content w-full ">
-          <div className=" h-[300px] " style={{ margin: "50px auto" }}>
+          <div className=" h-[300px] mt-12">
             {layout &&
               Object.keys(layout)?.map((row: string, rowIndex: number) => (
                 <div key={rowIndex} className="flex flex-row justify-center ">
-                  <div className="mx-4 basis-12 text-center">{row}</div>
+                  <div className="mx-4 basis-12 text-center font-bold">
+                    {row}
+                  </div>
                   <div className="flex justify-center">
                     {Array(layout[row])
                       .fill(<MdOutlineChair style={{ fontSize: 28 }} />)
@@ -105,7 +107,7 @@ const ChooseSeat = () => {
                 </div>
               ))}
           </div>
-          <div className="screen_this_way absolute text-[red] bottom-6 right-[42%] ">
+          <div className="font-extrabold absolute text-[#8c001a] bottom-6 right-[42%] ">
             Screen This Way
           </div>
         </div>

@@ -87,7 +87,7 @@ const ShowTimings = () => {
                               {`Screen ${show?.screenNo}`}
                             </div>
                             <div
-                              className="px-1 cursor-pointer bg-[red] hover:bg-[green] rounded-lg"
+                              className="px-1 cursor-pointer bg-[#8c001a] hover:bg-[green] rounded-lg"
                               onClick={() =>
                                 navigate(
                                   `${PathNames.SELECT_SEATS}/${id}/${theatre.name}/${show?.screenNo}`

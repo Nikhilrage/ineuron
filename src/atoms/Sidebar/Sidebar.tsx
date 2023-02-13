@@ -10,7 +10,7 @@ const sidebarMenu = ["Movies", "Timings", "Seat Selection", "Payment"];
 const Sidebar = (props: sidebarProps) => {
   return (
     <div className="sticky top-0 left-0 z-10 bottom-0 min-w-[200px] max-w-[200px] bg-[#000]  h-[100vh] ">
-      <div className="flex flex-col gap-y-2.5 p-2">
+      <div className=" p-2 flex flex-col gap-y-2.5">
         <div className="logo">
           <img src={logo} alt="" />
         </div>
@@ -26,7 +26,14 @@ const Sidebar = (props: sidebarProps) => {
                   backgroundColor: i === props.title ? "#fff" : "#30000C",
                 }}
               ></span>
-              <span className="pl-3 text-[#30000C]">{i}</span>
+              <span
+                className="pl-3"
+                style={{
+                  color: i === props.title ? "#fff" : "#30000C",
+                }}
+              >
+                {i}
+              </span>
             </div>
           ))}
         </div>
