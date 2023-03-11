@@ -1,41 +1,39 @@
 import React from "react";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/ineuron_logo.png";
 
-type sidebarProps = {
-  title?: string;
-};
-
-const sidebarMenu = ["Movies", "Timings", "Seat Selection", "Payment"];
-
-const Sidebar = (props: sidebarProps) => {
+const sidebarTabs = [
+  {
+    name: "Active users",
+  },
+  {
+    name: "Deleted users",
+  },
+  {
+    name: "user logs",
+  },
+];
+const Sidebar = () => {
   return (
-    <div className="sticky top-0 left-0 z-10 bottom-0 min-w-[200px] max-w-[200px] bg-[#000]  h-[100vh] ">
-      <div className=" p-2 flex flex-col gap-y-2.5">
-        <div className="logo">
-          <img src={logo} alt="" />
-        </div>
-        <div className="px-2 flex flex-col justify-start items-center gap-y-2.5 ">
-          {sidebarMenu.map((i: string, index: number) => (
-            <div
-              className="bg-[#8c001a] w-full px-3 py-3 text-md font-semibold rounded-2xl flex flex-row items-center justify-start"
-              key={index}
-            >
-              <span
-                className="rounded-[50%] h-2.5 w-2.5"
-                style={{
-                  backgroundColor: i === props.title ? "#fff" : "#30000C",
-                }}
-              ></span>
-              <span
-                className="pl-3"
-                style={{
-                  color: i === props.title ? "#fff" : "#30000C",
-                }}
+    <div
+      className=" text-[#000] border-r border-slate-500"
+      style={{ height: "100vh" }}
+    >
+      <div className="sidebar_main mx-4 h-full">
+        <div className="flex flex-col  h-full">
+          <div className="sidebar_logo my-6 pb-4 border-b border-[pink]-900 ">
+            <img src={logo} alt="" className="object-contain h-full w-full" />
+          </div>
+          <div className="mt-7">
+            {sidebarTabs.map((i: any, index: number) => (
+              <div
+                key={index}
+                className="py-3 px-2 mb-4 rounded-xl bg-[#8690A0] flex items-center justify-start"
               >
-                {i}
-              </span>
-            </div>
-          ))}
+                <span className="mr-4  w-4 h-4 rounded-[50%] bg-[#000]" />
+                <div>{i?.name}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
