@@ -1,26 +1,63 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import Actions from "../../atoms/Actions/Actions";
 import { useAppSelector } from "../../Redux/store";
 import "../Styles.css";
 import TableTabs from "../TableTabs/TableTabs";
 
+interface userLogs {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+}
+interface userList {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  age: string;
+  phoneNumber: number;
+}
+
 const UserTable = () => {
+  const getDeletedUsers: any = localStorage.getItem("deletedUsers");
+
   const activeTab = useAppSelector(
     ({ dashboardState }) => dashboardState.activeTab
   );
-  const archivedUsers = useAppSelector(({ users }) => users.archivedUsers);
-
-  const [activeUsers, setActiveUsers] = useState<any>([]);
-
-  //const []
-
   const allUsers = useAppSelector(({ users }) => users.activeUsers);
-  console.log("archivedUsers: ", archivedUsers);
+
+  const [tableheading, setTableheading] = useState<string[]>([]);
+  const [usersList, setUsersList] = useState<any>([]);
+
   useEffect(() => {
-    setActiveUsers(
-      (activeTab === 0 ? allUsers : archivedUsers).map(
-        (user: any, index: number) => {
-          console.log("user: ", user);
+    let activeTabUserData: any = [];
+    if (activeTab === 1) {
+      const parsingDeletedUsers: any = JSON.parse(getDeletedUsers);
+      activeTabUserData = [...parsingDeletedUsers];
+    }
+    if (activeTab === 0) {
+      activeTabUserData = [...allUsers];
+    }
+    if (activeTab === 2) {
+      const parsingDeletedUsers: any = JSON.parse(getDeletedUsers);
+      const getAllUsers = [...allUsers, ...parsingDeletedUsers];
+      const userLogs = getAllUsers.map((user: userLogs) => {
+        return {
+          userId: user._id,
+          name: `${user.firstName}  ${user.lastName}`,
+          createdAt: moment(user.createdAt).format("DD/MM/YYYY - hh:mm:ss"),
+          updatedAt: moment(user.updatedAt).format("DD/MM/YYYY - hh:mm:ss"),
+          status: getUserStatus(user._id) ? "Active" : "Archived",
+        };
+      });
+      setTableheading(userLogsHeading);
+      setUsersList(userLogs);
+    } else {
+      const userData = activeTabUserData?.map(
+        (user: userList, index: number) => {
           return {
             userId: user._id,
             name: `${user.firstName}  ${user.lastName}`,
@@ -28,11 +65,19 @@ const UserTable = () => {
             number: user.phoneNumber,
           };
         }
-      )
-    );
-  }, [activeTab, allUsers]);
+      );
+      setTableheading(headings);
+      setUsersList(userData);
+    }
+  }, [activeTab, allUsers, getDeletedUsers]);
 
-  console.log("activeUsers: ", activeUsers);
+  const getUserStatus = (id: string) => {
+    const userStatus = allUsers.find((item: any) => {
+      return item._id === id;
+    });
+    return userStatus ? true : false;
+  };
+
   return (
     <div>
       <TableTabs />
@@ -49,7 +94,7 @@ const UserTable = () => {
             style={{ position: "sticky", top: 0 }}
           >
             <tr>
-              {headings.map((i: string, index: number) => (
+              {tableheading?.map((i: string, index: number) => (
                 <th
                   key={index}
                   className={`px-5 ${
@@ -64,25 +109,49 @@ const UserTable = () => {
             </tr>
           </thead>
           <tbody>
-            {activeUsers?.map((i: any, index: number) => (
-              <tr
-                key={index}
-                className={`text-start px-5 h-12 
+            {usersList?.map((i: any, index: number) =>
+              activeTab === 2 ? (
+                <tr
+                  key={index}
+                  className={`text-start px-5 h-12 
                   ${index % 2 === 0 ? "bg-[#EEF2F7]" : "bg-[#FFF]"}
                   `}
-              >
-                <td className="px-5 border-[#EBECF0]">{i?.userId}</td>
-                <td className="px-5">{i?.name}</td>
-                <td className="px-5">{i?.age}</td>
-                <td className="px-4">{i?.number}</td>
-                <td className="w-[260px]">
-                  <Actions
-                    textToBeCopied={i?.userId}
-                    idToBeDeleted={i?.userId}
-                  />
-                </td>
-              </tr>
-            ))}
+                >
+                  <td className="px-5 w-40">{i?.userId}</td>
+                  <td className="px-5 w-36">{i?.name}</td>
+                  <td className="px-5 w-48">{i?.createdAt}</td>
+                  <td className="pl-6 w-48">{i?.updatedAt}</td>
+                  <td className={`"px-8"`}>
+                    <center
+                      className={`mx-6 py-2 rounded-2xl
+                      ${
+                        i?.status === "Active" ? "bg-[#A693FD]" : "bg-[#F7931A]"
+                      }
+                      `}
+                    >
+                      {i?.status}
+                    </center>
+                  </td>
+                </tr>
+              ) : (
+                <tr
+                  key={index}
+                  className={`text-start px-5 h-12 
+                  ${index % 2 === 0 ? "bg-[#EEF2F7]" : "bg-[#FFF]"}
+                  `}
+                >
+                  <td className="px-5">{i?.userId}</td>
+                  <td className="px-5 w-32 text-ellipsis overflow-hidden">
+                    {i?.name}
+                  </td>
+                  <td className="px-5">{i?.age}</td>
+                  <td className="px-4">{i?.number}</td>
+                  <td className="w-[260px]">
+                    <Actions textToBeCopied={i?.userId} id={i?.userId} />
+                  </td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div>
@@ -93,10 +162,13 @@ const UserTable = () => {
 export default UserTable;
 
 const headings = ["User Id", "Full Name", "Age", "Number", "Actions"];
+const userLogsHeading = [
+  "User Id",
+  "Full Name",
+  "Created Date",
+  "Updated Date",
+  "status",
+];
 
-//typescript types
-//table logic
-//initial modal
 // modal form css and validation
 //testing
-// push to netlify and make the count

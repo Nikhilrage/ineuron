@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface dashboardStateSliceInterface {
   openModal: boolean;
   loading: boolean;
-  showToast: boolean;
+  openToast: boolean;
   toastMessage: string;
   openDeleteUserModal: boolean;
   activeTab: number;
@@ -14,7 +14,7 @@ const initialState: dashboardStateSliceInterface = {
   openModal: false,
   openDeleteUserModal: false,
   loading: false,
-  showToast: false,
+  openToast: false,
   toastMessage: "",
   activeTab: 0,
   deleteApiVariableId: "",
@@ -23,25 +23,25 @@ export const dashboardStateSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    setOpenModal: (state, action: PayloadAction<any>) => {
+    setOpenModal: (state, action: PayloadAction<boolean>) => {
       state.openModal = action.payload;
     },
-    setOpenDeleteUserModal: (state, action: PayloadAction<any>) => {
+    setOpenDeleteUserModal: (state, action: PayloadAction<boolean>) => {
       state.openDeleteUserModal = action.payload;
     },
-    setLoading: (state, action: PayloadAction<any>) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    setOpenToast: (state, action: PayloadAction<any>) => {
-      state.showToast = action.payload;
+    setOpenToast: (state, action: PayloadAction<boolean>) => {
+      state.openToast = action.payload;
     },
-    setToastMessage: (state, action: PayloadAction<any>) => {
+    setToastMessage: (state, action: PayloadAction<string>) => {
       state.toastMessage = action.payload;
     },
-    setActiveTab: (state, action: PayloadAction<any>) => {
+    setActiveTab: (state, action: PayloadAction<number>) => {
       state.activeTab = action.payload;
     },
-    setSeleteApiVariableId: (state, action: PayloadAction<any>) => {
+    setSeleteApiVariableId: (state, action: PayloadAction<string>) => {
       state.deleteApiVariableId = action.payload;
     },
   },

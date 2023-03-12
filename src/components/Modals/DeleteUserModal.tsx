@@ -7,7 +7,8 @@ import {
   setOpenToast,
   setToastMessage,
 } from "../../Redux/slices/dashboardStateSlice";
-import { setArchivedUsers } from "../../Redux/slices/userSlice";
+import { setAllUsers } from "../../Redux/slices/userSlice";
+//import { setArchivedUsers } from "../../Redux/slices/userSlice";
 import { useAppDispatch, useAppSelector } from "../../Redux/store";
 
 const DeleteUserModal = () => {
@@ -16,19 +17,21 @@ const DeleteUserModal = () => {
   const deleteApiVariableId = useAppSelector(
     ({ dashboardState }) => dashboardState.deleteApiVariableId
   );
+  const allUsers = useAppSelector(({ users }) => users.activeUsers);
 
   const deleteUser = async () => {
     try {
       dispatch(setOpenDeleteUserModal(false));
       dispatch(setLoading(true));
-      dispatch(setArchivedUsers(deleteApiVariableId));
-      const res: any = await dashboardCalls.deleteUser(deleteApiVariableId);
-      console.log("res: ", res);
+      const res = await dashboardCalls.deleteUser(deleteApiVariableId);
       if (res?.message === constants.userDeleted) {
-        dispatch(setArchivedUsers(deleteApiVariableId));
+        storingDeletedUsers();
+        const removingUserFromActiveUsers = allUsers.filter((i: any) => {
+          return i._id !== deleteApiVariableId;
+        });
+        dispatch(setAllUsers(removingUserFromActiveUsers));
         dispatch(setToastMessage("User Deleted successfully"));
         dispatch(setOpenToast(true));
-        console.log("user deleted");
       } else {
         dispatch(setToastMessage(res?.message));
         dispatch(setOpenToast(true));
@@ -39,8 +42,23 @@ const DeleteUserModal = () => {
       console.log("err in deleting user", err);
     } finally {
       dispatch(setLoading(false));
-      dispatch(setArchivedUsers(""));
+      //dispatch(setArchivedUsers(""));
     }
+  };
+
+  const storingDeletedUsers = () => {
+    const deletedUser = allUsers.find((user: any) => {
+      return user._id === deleteApiVariableId;
+    });
+    let allDeletedUsers = [];
+    const getPreviousDeletedUsers: any = localStorage.getItem("deletedUsers");
+    if (getPreviousDeletedUsers) {
+      const tempData = JSON.parse(getPreviousDeletedUsers);
+      allDeletedUsers = [...tempData, deletedUser];
+    } else {
+      allDeletedUsers = [deletedUser];
+    }
+    localStorage.setItem("deletedUsers", JSON.stringify(allDeletedUsers));
   };
 
   return (

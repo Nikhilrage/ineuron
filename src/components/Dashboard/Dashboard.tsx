@@ -18,7 +18,6 @@ import {
 const Dashboard = () => {
   const dispatch = useDispatch();
   const allUsers = useAppSelector(({ users }) => users.activeUsers);
-  console.log("allUsers:  ", allUsers);
 
   useEffect(() => {
     getUsers();
@@ -28,7 +27,6 @@ const Dashboard = () => {
     try {
       dispatch(setLoading(true));
       const res = await dashboardCalls.getAllUsers();
-      console.log("res: ", res);
       if (res.message === constants.getAllusersSuccess) {
         dispatch(setAllUsers(res?.data));
       } else {

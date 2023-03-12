@@ -14,25 +14,26 @@ function App() {
   const openDeleteUserModal = useAppSelector(
     ({ dashboardState }) => dashboardState.openDeleteUserModal
   );
-  console.log("openDeleteUserModal: ", openDeleteUserModal);
   const openToastMessage = useAppSelector(
     ({ dashboardState }) => dashboardState.openDeleteUserModal
+  );
+  const openToast = useAppSelector(
+    ({ dashboardState }) => dashboardState.openToast
   );
   const loading = useAppSelector(
     ({ dashboardState }) => dashboardState.loading
   );
-  console.log("openDeleteUserModal: ", openDeleteUserModal);
 
   return (
     <>
       <div className="flex h-full" style={{ height: "100vh" }}>
         <div
-          className="bg-[#090B1A]"
+          className="sidebar_main bg-[#090B1A]"
           style={{ height: "100%", flexBasis: "20%" }}
         >
           <Sidebar />
         </div>
-        <div className="" style={{ flexBasis: "80%" }}>
+        <div className="main_content" style={{ flexBasis: "80%" }}>
           <center
             className="h-[70px] pt-5 bg-[#090B1A] text-[#8690A0]"
             style={{ fontSize: 24, fontWeight: 500 }}
@@ -40,12 +41,10 @@ function App() {
             Admin Dashboard
           </center>
           <div
-            className="bg-[#F7F9FB]"
+            className="bg-[#F7F9FB] w-full"
             style={{
               borderTopLeftRadius: "20px",
-              //background: "aqua",
-              width: "100%",
-              //height: "100%",
+              //width: "100%",
             }}
           >
             <Dashboard />
@@ -54,7 +53,7 @@ function App() {
       </div>
       {showModal && <AddUserModal />}
       {openDeleteUserModal && <DeleteUserModal />}
-      {openToastMessage && <SnackBar />}
+      {openToast && <SnackBar />}
       {loading && <Loader />}
     </>
   );

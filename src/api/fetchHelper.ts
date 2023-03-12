@@ -16,11 +16,10 @@ export const dashboardCalls = {
     })
       .then((res) => res.json())
       .then((response) => {
-        console.log("fetch api: ", response);
         return response;
       }),
-  editUser: async (payload: object) =>
-    await fetch("", {
+  editUser: async (payload: object, id: string) =>
+    await fetch(`https://blue-journalist-bbrpv.ineuron.app:4000/user/${id}`, {
       method: "PATCH",
       body: JSON.stringify(payload),
       headers: {
@@ -28,13 +27,10 @@ export const dashboardCalls = {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => {
-        res.json();
-      })
+      .then((res) => res.json())
       .then((response) => {
         return response;
       }),
-
   deleteUser: async (id: string) =>
     await fetch(`https://blue-journalist-bbrpv.ineuron.app:4000/user/${id}`, {
       method: "DELETE",
@@ -43,9 +39,7 @@ export const dashboardCalls = {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => {
-        response.json();
-      })
+      .then((response) => response.json())
       .then((res) => {
         return res;
       }),

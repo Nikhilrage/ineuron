@@ -1,34 +1,38 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface activeUsersInterface {
+  firstName: string;
+  lastName: string;
+  phoneNumber: number;
+  age: number;
+  _id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}
+
 export interface users {
-  activeUsers: any;
-  cardsData: any;
-  archivedUsers: any;
-  logs: any;
+  activeUsers: activeUsersInterface[];
+  userIdToBeEdited: string;
 }
 
 const initialState: users = {
   activeUsers: [],
-  cardsData: [],
-  archivedUsers: [],
-  logs: [],
+  userIdToBeEdited: "",
 };
 
 export const userSlice = createSlice({
   name: "userDetails",
   initialState,
   reducers: {
-    setAllUsers: (state, action: PayloadAction<any>) => {
+    setAllUsers: (state, action: PayloadAction<activeUsersInterface[]>) => {
       state.activeUsers = action.payload;
     },
-    setArchivedUsers: (state, action: PayloadAction<any>) => {
-      const getDeletedUsers = state.activeUsers.filter((user: any) => {
-        return user.id === action.payload;
-      });
-      state.archivedUsers = getDeletedUsers;
+    setUserIdToBeEdited: (state, action: PayloadAction<string>) => {
+      state.userIdToBeEdited = action.payload;
     },
   },
 });
 
-export const { setAllUsers, setArchivedUsers } = userSlice.actions;
+export const { setAllUsers, setUserIdToBeEdited } = userSlice.actions;
 export default userSlice.reducer;

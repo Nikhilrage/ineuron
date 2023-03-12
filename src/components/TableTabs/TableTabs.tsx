@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, FC } from "react";
 import { setActiveTab } from "../../Redux/slices/dashboardStateSlice";
 import { useAppDispatch } from "../../Redux/store";
+import { BiUserX, BiUser, BiBlanket } from "react-icons/bi";
 
 const TableTabs = () => {
+  const tableTabs = [
+    { name: "Active users", icon: <BiUser className="text-lg" /> },
+    { name: "Archived users", icon: <BiUserX /> },
+    { name: "User logs", icon: <BiBlanket /> },
+  ];
+  console.log("tableTabs: ", tableTabs);
   const dispatch = useAppDispatch();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
@@ -25,15 +32,10 @@ const TableTabs = () => {
           >
             <div
               key={index}
-              className="h-full flex justify-center items-center cursor-pointer text-2xl font-medium"
+              className="h-full flex justify-center items-center cursor-pointer text-xl font-medium"
               onClick={() => handleTabClick(index)}
             >
-              <span
-                className="mr-4"
-                //className={`main__menu-item-icon ${tab?.icon} fs_28 mr-4 `}
-              >
-                <img src={tab?.icon} alt="" />
-              </span>
+              <span className="mr-1">{tab.icon}</span>
               <span className="">{tab.name}</span>
             </div>
           </li>
@@ -44,9 +46,3 @@ const TableTabs = () => {
 };
 
 export default TableTabs;
-
-const tableTabs = [
-  { name: "Active users" },
-  { name: "Archived users" },
-  { name: "User logs" },
-];
