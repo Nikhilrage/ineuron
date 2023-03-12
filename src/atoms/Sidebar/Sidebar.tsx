@@ -27,10 +27,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div
-      className=" text-[#000] border-r border-slate-500"
-      style={{ height: "100vh" }}
-    >
+    <div className=" text-[#000] border-r border-slate-500 h-screen">
       <div className=" mx-4 h-full">
         <div className="flex flex-col  h-full">
           <div className="sidebar_logo my-6 pb-4 border-b border-[pink]-900 ">

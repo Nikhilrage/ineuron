@@ -17,7 +17,7 @@ const DeleteUserModal = () => {
   const deleteApiVariableId = useAppSelector(
     ({ dashboardState }) => dashboardState.deleteApiVariableId
   );
-  const allUsers = useAppSelector(({ users }) => users.activeUsers);
+  const activeUsers = useAppSelector(({ users }) => users.activeUsers);
 
   const deleteUser = async () => {
     try {
@@ -25,8 +25,9 @@ const DeleteUserModal = () => {
       dispatch(setLoading(true));
       const res = await dashboardCalls.deleteUser(deleteApiVariableId);
       if (res?.message === constants.userDeleted) {
+        //storingDeletedUsers in local storage
         storingDeletedUsers();
-        const removingUserFromActiveUsers = allUsers.filter((i: any) => {
+        const removingUserFromActiveUsers = activeUsers.filter((i: any) => {
           return i._id !== deleteApiVariableId;
         });
         dispatch(setAllUsers(removingUserFromActiveUsers));
@@ -42,12 +43,11 @@ const DeleteUserModal = () => {
       console.log("err in deleting user", err);
     } finally {
       dispatch(setLoading(false));
-      //dispatch(setArchivedUsers(""));
     }
   };
 
   const storingDeletedUsers = () => {
-    const deletedUser = allUsers.find((user: any) => {
+    const deletedUser = activeUsers.find((user: any) => {
       return user._id === deleteApiVariableId;
     });
     let allDeletedUsers = [];
@@ -62,15 +62,7 @@ const DeleteUserModal = () => {
   };
 
   return (
-    <div
-      className="absolute top-0 left-0 flex flex-row justify-center items-center"
-      style={{
-        background: "rgba(0,0,0,0.6)",
-        height: "100vh",
-        width: "100vw",
-        zIndex: 999,
-      }}
-    >
+    <div className="absolute top-0 left-0 z-[999] flex flex-row justify-center items-center bg-[rgba(0,0,0,0.6] h-screen w-screen">
       <div className="bg-[#fff] w-3/12 h-40 p-6 rounded-2xl">
         <center>
           <p>Are you sure you want to delete the user.</p>

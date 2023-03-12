@@ -2,31 +2,42 @@ import React, { useEffect } from "react";
 import { dashboardCalls } from "../../api/fetchHelper";
 import UserTable from "../UserTable/UserTable";
 import Cards from "./Cards";
-import { useDispatch, useSelector } from "react-redux";
-//import userSlice from "../../Redux/userSlice";
+import { useDispatch } from "react-redux";
 import { constants } from "../../constants";
-import { useAppSelector } from "../../Redux/store";
 import { setAllUsers } from "../../Redux/slices/userSlice";
-import AddUserModal from "../Modals/AddUserModal";
 import {
   setLoading,
   setOpenToast,
   setToastMessage,
 } from "../../Redux/slices/dashboardStateSlice";
-//import { setAllUsers } from "../../Redux/userSlice";
 
-const Dashboard = () => {
+interface getusersResDatainterface {
+  firstName: string;
+  lastName: string;
+  phoneNumber: number;
+  age: number;
+  _id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}
+interface getusersInterface {
+  message: string;
+  data: getusersResDatainterface[];
+}
+
+const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
-  const allUsers = useAppSelector(({ users }) => users.activeUsers);
 
   useEffect(() => {
     getUsers();
   }, []);
 
+  //Getting All Users from DB
   const getUsers = async () => {
     try {
       dispatch(setLoading(true));
-      const res = await dashboardCalls.getAllUsers();
+      const res: getusersInterface = await dashboardCalls.getAllUsers();
       if (res.message === constants.getAllusersSuccess) {
         dispatch(setAllUsers(res?.data));
       } else {
@@ -40,6 +51,7 @@ const Dashboard = () => {
       dispatch(setLoading(false));
     }
   };
+
   return (
     <>
       <div className="p-5 flex flex-col ">

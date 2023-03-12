@@ -21,30 +21,39 @@ interface userList {
   phoneNumber: number;
 }
 
+interface logsInterface {
+  userId: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+}
+
+interface archivedActiveUsersInterface {
+  userId: string;
+  name: string;
+  age: number;
+  number: string;
+}
+
 const UserTable = () => {
   const getDeletedUsers: any = localStorage.getItem("deletedUsers");
 
   const activeTab = useAppSelector(
     ({ dashboardState }) => dashboardState.activeTab
   );
-  const allUsers = useAppSelector(({ users }) => users.activeUsers);
+  const activeUsers = useAppSelector(({ users }) => users.activeUsers);
 
   const [tableheading, setTableheading] = useState<string[]>([]);
-  const [usersList, setUsersList] = useState<any>([]);
+  const [usersList, setUsersList] = useState<any[]>([]);
 
   useEffect(() => {
-    let activeTabUserData: any = [];
-    if (activeTab === 1) {
-      const parsingDeletedUsers: any = JSON.parse(getDeletedUsers);
-      activeTabUserData = [...parsingDeletedUsers];
-    }
-    if (activeTab === 0) {
-      activeTabUserData = [...allUsers];
-    }
+    // the below code will be used to make table data as per tabs selected
+
     if (activeTab === 2) {
-      const parsingDeletedUsers: any = JSON.parse(getDeletedUsers);
-      const getAllUsers = [...allUsers, ...parsingDeletedUsers];
-      const userLogs = getAllUsers.map((user: userLogs) => {
+      const parsingDeletedUsers = JSON.parse(getDeletedUsers);
+      const getAllUsers = [...activeUsers, ...parsingDeletedUsers];
+      const logs: logsInterface[] = getAllUsers.map((user: userLogs) => {
         return {
           userId: user._id,
           name: `${user.firstName}  ${user.lastName}`,
@@ -54,10 +63,18 @@ const UserTable = () => {
         };
       });
       setTableheading(userLogsHeading);
-      setUsersList(userLogs);
+      setUsersList(logs);
     } else {
-      const userData = activeTabUserData?.map(
-        (user: userList, index: number) => {
+      let userTableData: any = [];
+      if (activeTab === 1) {
+        const parsingDeletedUsers: any = JSON.parse(getDeletedUsers);
+        userTableData = [...parsingDeletedUsers];
+      }
+      if (activeTab === 0) {
+        userTableData = [...activeUsers];
+      }
+      const userData: archivedActiveUsersInterface[] = userTableData?.map(
+        (user: userList) => {
           return {
             userId: user._id,
             name: `${user.firstName}  ${user.lastName}`,
@@ -69,10 +86,11 @@ const UserTable = () => {
       setTableheading(headings);
       setUsersList(userData);
     }
-  }, [activeTab, allUsers, getDeletedUsers]);
+  }, [activeTab, activeUsers, getDeletedUsers]);
 
+  // this function helps to know whether user is active or archived
   const getUserStatus = (id: string) => {
-    const userStatus = allUsers.find((item: any) => {
+    const userStatus = activeUsers.find((item: any) => {
       return item._id === id;
     });
     return userStatus ? true : false;
@@ -81,18 +99,9 @@ const UserTable = () => {
   return (
     <div>
       <TableTabs />
-      <div
-        className="w-full"
-        style={{
-          maxHeight: 300,
-          overflowY: "scroll",
-        }}
-      >
+      <div className="w-full max-h-80 overflow-y-scroll	">
         <table width={"100%"} className="noScrollbar bg-[#F7F9FB]">
-          <thead
-            className="bg-[#F7F9FB] border-b border-slate-200"
-            style={{ position: "sticky", top: 0 }}
-          >
+          <thead className="bg-[#F7F9FB] border-b border-slate-200 sticky top-0">
             <tr>
               {tableheading?.map((i: string, index: number) => (
                 <th
@@ -111,6 +120,7 @@ const UserTable = () => {
           <tbody>
             {usersList?.map((i: any, index: number) =>
               activeTab === 2 ? (
+                // this below code is for tabs - user logs
                 <tr
                   key={index}
                   className={`text-start px-5 h-12 
@@ -134,6 +144,7 @@ const UserTable = () => {
                   </td>
                 </tr>
               ) : (
+                // this below code is for tabs - Active && Archived
                 <tr
                   key={index}
                   className={`text-start px-5 h-12 
@@ -169,6 +180,3 @@ const userLogsHeading = [
   "Updated Date",
   "status",
 ];
-
-// modal form css and validation
-//testing

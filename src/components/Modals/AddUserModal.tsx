@@ -24,7 +24,7 @@ interface activeUsersInterface {
 const AddUserModal = () => {
   const dispatch = useAppDispatch();
 
-  const allUsers = useAppSelector(({ users }) => users.activeUsers);
+  const activeUsers = useAppSelector(({ users }) => users.activeUsers);
 
   const userIdToBeEdited = useAppSelector(
     ({ users }) => users.userIdToBeEdited
@@ -42,6 +42,7 @@ const AddUserModal = () => {
   const [ageErrorMsg, setAgeErrorMsg] = useState<string>("");
 
   useEffect(() => {
+    // useful for showing errors in form
     firstName.length > 0 && firstName.length < 2
       ? setFirstNameInputErrorMsg("First name must be at least 2 characters")
       : setFirstNameInputErrorMsg("");
@@ -51,24 +52,22 @@ const AddUserModal = () => {
     phoneNumber.length > 0 && phoneNumber.length !== 10
       ? setNumberErrorMsg("Number should be 10 digits")
       : setNumberErrorMsg("");
-    //age !== undefined && age > 18 && age < 70
-    //  ? setAgeErrorMsg("Age should be between 18 to 70")
-    //  : setAgeErrorMsg("");
   }, [firstName, lastName, phoneNumber, age]);
 
   useEffect(() => {
-    if (userIdToBeEdited.length > 0) {
-      const getUserDetailsTobeDeleted: any = allUsers.find(
+    // for setting form values when user is editing the data
+    if (userIdToBeEdited.length > 0 && activeUsers) {
+      const getUserDetailsTobeEdited: any = activeUsers.find(
         (user: activeUsersInterface) => {
           return user._id === userIdToBeEdited;
         }
       );
-      setFirstName(getUserDetailsTobeDeleted?.firstName);
-      setLastName(getUserDetailsTobeDeleted?.lastName);
-      setPhoneNumber(getUserDetailsTobeDeleted?.phoneNumber);
-      setAge(getUserDetailsTobeDeleted?.age);
+      setFirstName(getUserDetailsTobeEdited?.firstName);
+      setLastName(getUserDetailsTobeEdited?.lastName);
+      setPhoneNumber(getUserDetailsTobeEdited?.phoneNumber);
+      setAge(getUserDetailsTobeEdited?.age);
     }
-  }, [userIdToBeEdited]);
+  }, [userIdToBeEdited, activeUsers]);
 
   const createUser = async () => {
     try {
@@ -77,8 +76,8 @@ const AddUserModal = () => {
       const payload = { firstName, lastName, phoneNumber, age };
       const res = await dashboardCalls.createUser(payload);
       if (res.message === constants.UserCreated) {
-        const allUsersCopy = allUsers;
-        dispatch(setAllUsers([...allUsersCopy, res.data]));
+        const activeUsersCopy = activeUsers;
+        dispatch(setAllUsers([...activeUsersCopy, res.data]));
         dispatch(setToastMessage("User created successfully"));
         dispatch(setOpenToast(true));
       } else {
@@ -97,17 +96,27 @@ const AddUserModal = () => {
   const editUser = async () => {
     try {
       dispatch(setLoading(true));
+      // this is use for closing the modal and clearing the userId which is in redux
       clearReduxValue();
       const payload = { firstName, lastName, phoneNumber, age };
       const res = await dashboardCalls.editUser(payload, userIdToBeEdited);
       if (res.message === constants.userEditedSuccessfuly) {
-        const allUsersCopy = allUsers;
-        const updatedUserData = allUsersCopy.map((user: any, index: number) => {
-          return user._id === res.data._id ? (index = res.data) : user;
-        });
+        // When user is edited making API call and updating the active users data in redux
+        const activeUsersCopy = activeUsers;
+        const updatedUserData = activeUsersCopy.map(
+          (user: any, index: number) => {
+            return user._id === res.data._id ? (index = res.data) : user;
+          }
+        );
         dispatch(setAllUsers(updatedUserData));
+        //opening toast message as user updating is successful
         dispatch(setOpenToast(true));
         dispatch(setToastMessage("User edited Successfully"));
+      } else {
+        dispatch(setOpenToast(true));
+        dispatch(
+          setToastMessage("Something went wrong in editing the user details")
+        );
       }
     } catch (err) {
       console.log("err in editing user: ", err);
@@ -121,8 +130,7 @@ const AddUserModal = () => {
     dispatch(setUserIdToBeEdited(""));
   };
 
-  const btnDisbaledHandler = () => {
-    console.log(age);
+  const btnDisabledHandler = () => {
     if (
       (age && (age < 18 || age === 0)) ||
       firstName.length < 2 ||
@@ -137,20 +145,8 @@ const AddUserModal = () => {
   };
 
   return (
-    <div
-      className="absolute flex justify-center"
-      style={{
-        zIndex: "999",
-        top: 0,
-        width: "100%",
-        height: "100%",
-        background: "rgba(0,0,0,0.8)",
-      }}
-    >
-      <div
-        className="bg-[#fff] rounded-lg py-2 mt-9 w-80"
-        style={{ height: "fit-content" }}
-      >
+    <div className="absolute top-0 z-[999] w-full h-full bg-[rgba(0,0,0,0.8)] flex justify-center">
+      <div className="bg-[#fff] rounded-lg pt-2 pb-6 mt-9 w-80 h-fit">
         <center className="py-3 border-b border-slate-300 divide-x-4">
           <h2 className="text-lg font-medium text-[#8690a0]">{`${
             userIdToBeEdited?.length > 0 ? "Edit" : "Add"
@@ -176,7 +172,6 @@ const AddUserModal = () => {
                 maxLength={15}
                 onChange={(e) => {
                   setFirstName(e.target.value);
-                  //(firstName.length > 0 && firstName.length <= 5) ? setFirstNameInputErrorMsg("Should be between than 4 to 15 characters") : setFirstNameInputErrorMsg(""); //prettier-ignore
                 }}
               />
               <span>
@@ -254,12 +249,10 @@ const AddUserModal = () => {
                 <p className="text-[red] text-[9px]">{ageErrorMsg}</p>
               </span>
             </div>
-            <hr className="my-3" />
-            <div className="flex flex-row justify-between items-center">
+            <hr className="mt-5" />
+            <div className="pt-3 flex flex-row justify-between items-center">
               <button
-                //type="submit"
-
-                className=" py-2 w-32 bg-[#0669F8] text-[#fff] rounded-md"
+                className="py-2 w-32 bg-[#0669F8] text-[#fff] rounded-md"
                 onClick={() => {
                   userIdToBeEdited.length > 0
                     ? clearReduxValue()
@@ -269,16 +262,15 @@ const AddUserModal = () => {
                 Cancel
               </button>
               <button
-                disabled={btnDisbaledHandler()}
+                disabled={btnDisabledHandler()}
                 className={`py-2 w-32 bg-[#0669F8] text-[#fff] rounded-md ${
-                  btnDisbaledHandler() && "opacity-30"
+                  btnDisabledHandler() && "opacity-30"
                 }`}
                 onClick={userIdToBeEdited.length > 0 ? editUser : createUser}
               >
                 Save
               </button>
             </div>
-            {/*</div>*/}
           </form>
         </div>
       </div>

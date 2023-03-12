@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Loader from "./atoms/Loader/Loader";
 import Sidebar from "./atoms/Sidebar/Sidebar";
 import Dashboard from "./components/Dashboard/Dashboard";
 import AddUserModal from "./components/Modals/AddUserModal";
 import DeleteUserModal from "./components/Modals/DeleteUserModal";
 import SnackBar from "./components/Modals/SnackBar";
-import { useAppSelector } from "./Redux/store";
+import {
+  setOpenToast,
+  setToastMessage,
+} from "./Redux/slices/dashboardStateSlice";
+import { useAppDispatch, useAppSelector } from "./Redux/store";
 
-function App() {
+const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const showModal = useAppSelector(
     ({ dashboardState }) => dashboardState.openModal
   );
   const openDeleteUserModal = useAppSelector(
-    ({ dashboardState }) => dashboardState.openDeleteUserModal
-  );
-  const openToastMessage = useAppSelector(
     ({ dashboardState }) => dashboardState.openDeleteUserModal
   );
   const openToast = useAppSelector(
@@ -23,6 +26,15 @@ function App() {
   const loading = useAppSelector(
     ({ dashboardState }) => dashboardState.loading
   );
+
+  useEffect(() => {
+    if (openToast) {
+      setTimeout(() => {
+        dispatch(setOpenToast(false));
+        dispatch(setToastMessage(""));
+      }, 5000);
+    }
+  }, [openToast]);
 
   return (
     <>
@@ -57,6 +69,6 @@ function App() {
       {loading && <Loader />}
     </>
   );
-}
+};
 
 export default App;
